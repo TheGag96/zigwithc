@@ -1,51 +1,15 @@
 # `Zig` with `C`
-This is a very simple example to demonstrate how `Zig` works with `C`.
 
-# Run
-Use below script to run.
-```bash
-zig build run
+`zig build` output:
+
 ```
-
-# Test
-Use below script to test.
-```bash
-zig build test
+<proj path>/src/main.zig:11:16: error: expected type '.media.<username>.4ea9c2fa-455c-480d-adbd-b533afd47647.home.<username>.Coding.Zig.zigwithc.zig-cache.o.8cf07da78935aad995196c635ddb6192.cimport.struct_tm', found '.media.<username>.4ea9c2fa-455c-480d-adbd-b533afd47647.home.<username>.Coding.Zig.zigwithc.zig-cache.o.46100012acc16f9e9848385e1fd2122e.cimport.struct_tm'
+    clibB.doIt(thing);
+               ^~~~~
+<proj path>/zig-cache/o/46100012acc16f9e9848385e1fd2122e/cimport.zig:121:30: note: struct declared here
+pub const struct_tm = extern struct {
+                      ~~~~~~~^~~~~~
+<proj path>/zig-cache/o/8cf07da78935aad995196c635ddb6192/cimport.zig:121:30: note: struct declared here
+pub const struct_tm = extern struct {
+                      ~~~~~~~^~~~~~
 ```
-
-# The magic
-It's in `build.zig`, the magic code is here.
-*(You may change or add more flags in `c_args`.)*
-
-```zig
-fn withC(exe: *std.build.LibExeObjStep) void {
-    const c_args = [_][]const u8{
-        "-std=c99",
-    };
-
-    // exe.linkLibC();
-    exe.addIncludePath("src/vendor/include");
-    exe.addCSourceFile("src/vendor/myadd.c", &c_args);
-    exe.addCSourceFile("src/vendor/mytime.c", &c_args);
-}
-```
-
-Invoking the function `withC` for `zig build run`,
-```zig
-    ...
-    const exe = b.addExecutable("zigwithc", "src/main.zig");
-    exe.setTarget(target);
-    exe.setBuildMode(mode);
-    withC(exe);
-    ...
-```
- and ` zig build test`.
-```zig
-    ...
-    const exe_tests = b.addTest("src/main.zig");
-    exe_tests.setTarget(target);
-    exe_tests.setBuildMode(mode);
-    withC(exe_tests);
-    ...
-```
-That's it.

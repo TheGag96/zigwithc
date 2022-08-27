@@ -40,8 +40,9 @@ fn withC(exe: *std.build.LibExeObjStep) void {
         "-std=c99",
     };
 
-    // exe.linkLibC();
+    exe.linkLibC();
+    exe.addIncludePath("/usr/include");
     exe.addIncludePath("src/vendor/include");
-    exe.addCSourceFile("src/vendor/myadd.c", &c_args);
-    exe.addCSourceFile("src/vendor/mytime.c", &c_args);
+    exe.addCSourceFile("src/vendor/a.c", &c_args);
+    exe.addCSourceFile("src/vendor/b.c", &c_args);
 }
